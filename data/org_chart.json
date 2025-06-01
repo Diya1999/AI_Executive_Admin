@@ -1,0 +1,24 @@
+{
+  "Ananya": {
+    "level": 3,
+    "manager": "Ravi",
+    "reports": [
+      "Meena",
+      "Zoe"
+    ]
+  },
+  "Ravi": {
+    "level": 5,
+    "manager": "CTO",
+    "reports": [
+      "Ananya"
+    ]
+  },
+  "CTO": {
+    "level": 7,
+    "manager": null,
+    "reports": [
+      "Ravi"
+    ]
+  }
+}
