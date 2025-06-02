@@ -1,0 +1,28 @@
+{
+  "name": "Ananya",
+  "role": "Director of Engineering",
+  "meeting_preferences": {
+    "preferred_times": [
+      "10:00-12:00",
+      "13:00-16:00"
+    ],
+    "avoid_days": [
+      "Friday"
+    ]
+  },
+  "common_contacts": [
+    "ravi@company.com",
+    "maya@company.com"
+  ],
+  "travel_preferences": {
+    "airlines": [
+      "Delta",
+      "United"
+    ],
+    "seat_preference": "aisle",
+    "hotel_chains": [
+      "Marriott",
+      "Hilton"
+    ]
+  }
+}
