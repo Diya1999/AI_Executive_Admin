@@ -1,6 +1,7 @@
 import openai
 import os
 from dotenv import load_dotenv
+import re
 
 load_dotenv()  # Load environment variables from .env
 
@@ -22,14 +23,16 @@ def call_llm_brain(user_input):
     """
     prompt = f"""
     Analyze the following user request and extract:
-    - intent: calendar/email/task
-    - sentiment: positive/neutral/negative
+    - intent: one of [\"calendar\", \"email\", \"task\"]
+    - sentiment: one of [\"positive\", \"neutral\", \"negative\"]
     - tasks: a list of actionable tasks
-    Return as JSON.
+
+    Return ONLY a valid JSON object with keys: intent, sentiment, tasks. Do not include any explanation or extra text. Example:
+    {{"intent": "calendar", "sentiment": "positive", "tasks": ["Schedule a meeting with Ravi"]}}
+
     User request: {user_input}
     """
     if deepseek_client:
-        # Use the DeepSeek model name for NVIDIA endpoint
         response = deepseek_client.chat.completions.create(
             model="deepseek-ai/deepseek-r1",
             messages=[
@@ -53,7 +56,13 @@ def call_llm_brain(user_input):
     import json
     try:
         content = response.choices[0].message.content
-        data = json.loads(content)
-        return data
+        print("LLM raw output:", content)  # Debug print
+        # Extract the first JSON object from the output
+        match = re.search(r'\{.*\}', content, re.DOTALL)
+        if match:
+            data = json.loads(match.group(0))
+            return data
+        else:
+            return {"intent": "unknown", "sentiment": "neutral", "tasks": [], "error": "No JSON found in LLM output"}
     except Exception as e:
         return {"intent": "unknown", "sentiment": "neutral", "tasks": [], "error": str(e)} 
